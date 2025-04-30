@@ -1,5 +1,6 @@
+# requirements.txt
 fastapi==0.95.2
 uvicorn==0.22.0
-numpy==1.24.3
-opencv-python-headless==4.7.0.72
+numpy==1.21.6  # Last version with full Py3.8 support
+opencv-python-headless==4.5.5.64
 python-multipart==0.0.6
