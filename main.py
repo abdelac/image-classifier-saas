@@ -1,15 +1,14 @@
-# main.py
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 import cv2
 import os
-from datetime import datetime
-import uuid
+from typing import List
 
-app = FastAPI()
+# Initialize FastAPI
+app = FastAPI(title="Image Classification API")
 
-# Allow CORS (replace "*" with your frontend URL in production)
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,35 +16,57 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mock prediction function (replace with your actual model)
-def predict_image(img_array):
-    return {
-        "prediction": "Real",  # Replace with model inference
-        "confidence": 0.95
-    }
+# --- Your existing model code (simplified for API) ---
+IMG_SIZE = 224
+
+# Load models (you'll need to implement this properly)
+def load_models():
+    # Place your model loading code here
+    pass
+
+# Initialize models
+modeli = load_models()  # Your combined model
+gbdt_model = None       # Will be loaded with your GBDT model
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize models when the app starts"""
+    global modeli, gbdt_model
+    modeli = load_models()
+    # Load your trained GBDT model here
+    # gbdt_model = load_gbdt_model()
+
+@app.get("/")
+def read_root():
+    return {"message": "Image Classification API is running"}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     try:
-        # Generate unique request ID
-        request_id = str(uuid.uuid4())
-        
-        # Read and process image
+        # Read image file
         contents = await file.read()
         img = cv2.imdecode(np.frombuffer(contents, np.uint8), cv2.IMREAD_COLOR)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (224, 224))
-        img = img.astype('float32') / 255.0
         
-        # Get prediction (replace with your model)
-        result = predict_image(img)
+        # Preprocess (use your existing function)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+        img = img.astype('float32') / 255.0
+        img = np.expand_dims(img, axis=0)
+        
+        # Get prediction (replace with your actual prediction logic)
+        prediction = "Real"  # Placeholder
+        confidence = 0.95    # Placeholder
         
         return {
-            "prediction": result["prediction"],
-            "confidence": result["confidence"],
-            "request_id": request_id,
-            "timestamp": datetime.utcnow().isoformat()
+            "prediction": prediction,
+            "confidence": float(confidence),
+            "status": "success"
         }
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
