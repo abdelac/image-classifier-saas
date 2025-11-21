@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "main.py", "use": "@vercel/python" }
-  ],
+  "functions": {
+    "api/predict.py": {
+      "runtime": "python3.11"
+    }
+  },
   "routes": [
-    { "src": "/predict", "dest": "main.py" }
+    {
+      "src": "/predict",
+      "dest": "/api/predict.py"
+    }
   ]
 }

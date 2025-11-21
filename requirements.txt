@@ -1,12 +1,9 @@
-fastapi==0.95.2
+# requirements
 uvicorn==0.22.0
 <<<<<<< HEAD
 numpy==1.21.6  # Last version with full Py3.8 support
 opencv-python-headless==4.5.5.64
 python-multipart==0.0.6
-
-
-# requirements
 tensorflow
 keras
 opencv-python
@@ -16,8 +13,6 @@ uvicorn
 fastapi
 joblib
 Pillow
-=======
-numpy>=1.24.3  # Updated for Python 3.11+
-opencv-python-headless>=4.7.0.72
-python-multipart>=0.0.6
->>>>>>> 5aa46c024e6404fa4dbb47a696812e958e4806af
+
+
+
