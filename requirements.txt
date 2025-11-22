@@ -1,18 +1,7 @@
-# requirements
-uvicorn==0.22.0
-<<<<<<< HEAD
-numpy==1.21.6  # Last version with full Py3.8 support
-opencv-python-headless==4.5.5.64
-python-multipart==0.0.6
-tensorflow
+numpy
+tensorflow==2.10.1
 keras
 opencv-python
-numpy
-scikit-learn
-uvicorn
-fastapi
 joblib
-Pillow
-
-
-
+requests
+flask
