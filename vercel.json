@@ -4,9 +4,6 @@
       "runtime": "vercel-python@0.6.1"
     }
   },
-  "builds": [
-    { "src": "api/predict.py", "use": "@vercel/python" }
-  ],
   "routes": [
     { "src": "/api/predict", "dest": "/api/predict.py" }
   ]
