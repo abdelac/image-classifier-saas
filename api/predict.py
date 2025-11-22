@@ -3,6 +3,28 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
 
+
+def download_file(url, local_path):
+    if not os.path.exists(local_path):
+        print(f"Downloading {local_path} ...")
+        r = requests.get(url, stream=True)
+        r.raise_for_status()
+        with open(local_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
+        print(f"Downloaded {local_path}")
+
+# Replace these URLs with your GitHub release URLs
+MODEL_CNN_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/modeli.h5"
+MODEL_GBDT_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/fake_detectorj.pkl"
+
+download_file(MODEL_CNN_URL, "modeli.h5")
+download_file(MODEL_GBDT_URL, "gbdt_model.pkl")
+
+
+
+
+
 # Load models
 model_cnn = load_model("modeli.h5")
 model_gbdt = joblib.load("gbdt_model.pkl")
