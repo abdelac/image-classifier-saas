@@ -7,8 +7,8 @@ import joblib
 app = Flask(__name__)
 
 # Load models ONCE
-model_cnn = load_model("modeli.h5")
-model_gbdt = joblib.load("gbdt_model.pkl")
+model_cnn = load_model("models/modeli.h5")
+model_gbdt = joblib.load("models/gbdt_model.pkl")
 
 @app.route('/predict', methods=['POST'])
 def predict():
