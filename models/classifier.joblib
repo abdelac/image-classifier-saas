@@ -1,8 +1,3 @@
-from joblib import dump
-
-# After training your GBDT model
-dump(
-    gbdt_model,
-    'classifier.joblib',
-    compress=('zlib', 3)
-)
+version https://git-lfs.github.com/spec/v1
+oid sha256:cdcb4005f0c9489e78ea102841c4ab3ce6d98b258ac2e6c2979b172ff5eff05a
+size 138
