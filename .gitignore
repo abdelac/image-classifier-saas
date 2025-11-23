@@ -3,3 +3,4 @@ modeli.h5
 gbdt_model.pkl
 *.h5
 *.pkl
+.vercel

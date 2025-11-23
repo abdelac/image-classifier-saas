@@ -1,5 +1,5 @@
-tensorflow>=2.10.0,<2.20
-numpy
 flask
+numpy
+tensorflow==2.10.1
 joblib
 requests
