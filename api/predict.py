@@ -1,11 +1,11 @@
 import os
-import requests
 import json
+import requests
 import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
 
-
+# Function to download from GitHub Releases if missing
 def download_file(url, local_path):
     if not os.path.exists(local_path):
         print(f"Downloading {local_path} ...")
@@ -16,16 +16,13 @@ def download_file(url, local_path):
                 f.write(chunk)
         print(f"Downloaded {local_path}")
 
-# Replace these URLs with your GitHub release URLs
+# URLs from GitHub Releases
 MODEL_CNN_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/modeli.h5"
-MODEL_GBDT_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/fake_detectorj.pkl"
+MODEL_GBDT_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/gbdt_model.pkl"
 
+# Download if missing
 download_file(MODEL_CNN_URL, "modeli.h5")
 download_file(MODEL_GBDT_URL, "gbdt_model.pkl")
-
-
-
-
 
 # Load models
 model_cnn = load_model("modeli.h5")
@@ -34,7 +31,7 @@ model_gbdt = joblib.load("gbdt_model.pkl")
 def handler(request):
     try:
         data = request.get_json()  # get POST JSON
-        image_array = np.array(data["image"])
+        image_array = np.array(data["image"])  # e.g., 224x224x3
 
         # CNN prediction
         cnn_out = model_cnn.predict(image_array.reshape(1, 224, 224, 3))
