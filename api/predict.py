@@ -1,42 +1,34 @@
 import os
-import json
 import requests
+import json
 import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
 
-# Function to download from GitHub Releases if missing
 def download_file(url, local_path):
     if not os.path.exists(local_path):
-        print(f"Downloading {local_path} ...")
         r = requests.get(url, stream=True)
         r.raise_for_status()
         with open(local_path, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
                 f.write(chunk)
-        print(f"Downloaded {local_path}")
 
-# URLs from GitHub Releases
+# GitHub release URLs
 MODEL_CNN_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/modeli.h5"
-MODEL_GBDT_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/gbdt_model.pkl"
+MODEL_GBDT_URL = "https://github.com/abdelac/image-classifier-saas/releases/download/Model/fake_detectorj.pkl"
 
-# Download if missing
 download_file(MODEL_CNN_URL, "modeli.h5")
 download_file(MODEL_GBDT_URL, "gbdt_model.pkl")
 
-# Load models
 model_cnn = load_model("modeli.h5")
 model_gbdt = joblib.load("gbdt_model.pkl")
 
 def handler(request):
     try:
-        data = request.get_json()  # get POST JSON
-        image_array = np.array(data["image"])  # e.g., 224x224x3
+        data = request.get_json()
+        image_array = np.array(data["image"])
 
-        # CNN prediction
         cnn_out = model_cnn.predict(image_array.reshape(1, 224, 224, 3))
-
-        # GBDT prediction
         gbdt_out = model_gbdt.predict([cnn_out.flatten()])
 
         return {
@@ -46,9 +38,5 @@ def handler(request):
                 "gbdt_pred": gbdt_out.tolist()
             })
         }
-
     except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
-        }
+        return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
